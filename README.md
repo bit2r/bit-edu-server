@@ -86,3 +86,9 @@ workspace --> docker : run
   ```
 
    
+
+  ```
+  ssh shiny@localhost -p 2222
+  ```
+
+  
