@@ -48,8 +48,9 @@ RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 WORKDIR /home/bit-server
 RUN chown shiny:shiny -R /home/bit-server
 
-#USER shiny
-SHELL ["/bin/bash", "-c"]
+#change shiny user directory and sudouer 
+RUN usermod -d /home/bit-server shiny
+RUN usermod -aG sudo shiny
 
 # shiny-server apache2 apache2-ssl ssh
 EXPOSE 3838 80 443 22 
