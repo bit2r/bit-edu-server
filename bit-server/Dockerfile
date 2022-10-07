@@ -44,10 +44,9 @@ RUN R -f install_scripts/install_packages.R
 RUN install_scripts/install_packages.sh
 
 # setup workspace 
-RUN git clone https://github.com/joygram/bit-server.git /home
-WORKDIR /home/bit-server
+RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 
-WORKDIR /home/shiny-server
+WORKDIR /home/bit-server
 RUN chown shiny:shiny -R /home/bit-server
 
 #USER shiny
@@ -57,4 +56,4 @@ SHELL ["/bin/bash", "-c"]
 EXPOSE 3838 80 443 22 
 
 ## 패치 및 설정 반영 
-CMD ["bash", "/home/biti-server/scripts/update.sh"]
+CMD ["bash", "/home/bit-server/scripts/update.sh"]

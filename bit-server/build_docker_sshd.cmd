@@ -1,1 +1,0 @@
-docker build -t bit-sshd . -f Dockerfile.sshd 
