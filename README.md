@@ -91,4 +91,11 @@ workspace --> docker : run
   ssh shiny@localhost -p 2222
   ```
 
-  
+  ```
+  apache2/sites-enabled
+  ```
+
+```
+conf/넣어 오버라이드 하거나 한다. 
+```
+
