@@ -9,9 +9,10 @@ cp ./shiny-server.conf /etc/shiny-server/shiny-server.conf
 # run sshd 
 service ssh start 
 
-# run apache2
-#service apache2 start 
-# run mysqld 
-#service mysql start 
+#run apache2
+service apache2 start 
+
+#run mysqld 
+service mysql start 
 
 exec sudo -u shiny shiny-server
