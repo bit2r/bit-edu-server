@@ -40,7 +40,7 @@ RUN R -f install_scripts/install_packages.R
 RUN install_scripts/install_packages.sh
 
 # setup workspace 
-RUN git clone https://github.com/bit2r/bitWriting.git /home/shiny-server
+RUN git clone https://github.com/joygram/bit-server.git /home/shiny-server
 
 RUN ln -s /home/shiny-server/docker_bit-server/scripts /home/shiny-server/scripts
 WORKDIR /home/shiny-server

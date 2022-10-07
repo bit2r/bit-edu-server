@@ -58,7 +58,11 @@ os별로 환경을 구성하는 것도 불편하다.
 git clone https://github.com/joygram/bit-server.git
 ```
 
+포함하고 있는 환경 
 
+- nodejs / php / mysql(mariadb) / shiny-server / R and R package / qurto / tex / apache2 / vim / python3 
+
+- 
 
 ## 프로젝트 연결하기 
 
@@ -84,4 +88,4 @@ workspace --> docker : run
 
 
 
-`기본 설정`: 오버라이드 하고 싶은 경우  
+- `기본 설정`:   
