@@ -35,7 +35,6 @@ RUN echo "shiny:shiny" | chpasswd
 #server settings 
 WORKDIR /home/install
 COPY install_scripts ./install_scripts
-COPY scripts/ ./scripts
 
 # install required packages 
 RUN R -f install_scripts/install_packages.R 

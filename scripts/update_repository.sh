@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-if [ ! -d /home/shiny-server ]; then
+if [ ! -d /home/bit-server ]; then
 	echo git clone 
 	sudo -u shiny git clone https://github.com/joygram/bit-server.git /home/bit-server
 else 
