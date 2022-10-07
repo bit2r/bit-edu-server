@@ -2,20 +2,14 @@ FROM joygram/bit-server:latest
 LABEL maintainer="joygram <joygram@gmail.com>"
 
 RUN apt update 
-# RUN apt-get install -qq -y 
 
 WORKDIR /home/install
 COPY install_scripts ./install_scripts
 COPY scripts/ ./scripts
 RUN rm -Rf /home/shiny-server
-RUN git clone https://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@github.com/joygram/shiny-editor.git /home/shiny-server
-RUN ln -s /home/shiny-server/docker_bit-server/scripts /home/shiny-server/scripts
 
 # make ssh admin account 
-#RUN adduser admin 
-#RUN echo "admin:admin" | chpasswd 
 RUN echo "shiny:shiny" | chpasswd 
-
 
 WORKDIR /home/shiny-server
 RUN chown shiny:shiny -R /home/shiny-server

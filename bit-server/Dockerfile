@@ -29,24 +29,26 @@ RUN apt install php8.1 -y
 # install mariadb 
 RUN apt install mariadb-server mariadb-client -y
 
-#COPY scripts/shiny-server.conf /etc/shiny-server/shiny-server.conf
+# make ssh admin account 
+RUN echo "shiny:shiny" | chpasswd 
+
+#server settings 
 WORKDIR /home/install
 COPY install_scripts ./install_scripts
 COPY scripts/ ./scripts
 
 # install required packages 
 RUN R -f install_scripts/install_packages.R 
+
 # install shinylive, quarto, etc.
 RUN install_scripts/install_packages.sh
 
 # setup workspace 
-RUN git clone https://github.com/joygram/bit-server.git /home/shiny-server
+RUN git clone https://github.com/joygram/bit-server.git /home
+WORKDIR /home/bit-server
 
-RUN ln -s /home/shiny-server/docker_bit-server/scripts /home/shiny-server/scripts
 WORKDIR /home/shiny-server
-
-# copy shiny-server config site: /home/app/shiny-server/apps
-RUN chown shiny:shiny -R /home/shiny-server
+RUN chown shiny:shiny -R /home/bit-server
 
 #USER shiny
 SHELL ["/bin/bash", "-c"]
@@ -55,5 +57,4 @@ SHELL ["/bin/bash", "-c"]
 EXPOSE 3838 80 443 22 
 
 ## 패치 및 설정 반영 
-CMD ["bash", "/home/shiny-server/scripts/update.sh"]
-#CMD ["bash"]
+CMD ["bash", "/home/biti-server/scripts/update.sh"]
