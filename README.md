@@ -58,3 +58,30 @@ os별로 환경을 구성하는 것도 불편하다.
 git clone https://github.com/joygram/bit-server.git
 ```
 
+
+
+## 프로젝트 연결하기 
+
+작업하고자 하는 `git`프로젝트의 저장소와 token 설정을 한다.  
+
+```
+repository git주소 
+respsitory git주소
+```
+
+저장소가 없으면 clone 있으면 sync를 수행한다. 
+
+
+
+```mermaid
+stateDiagram-v2
+[*] --> bit_server : clone
+bit_server --> workspace : clone 
+workspace --> docker : run
+```
+
+
+
+
+
+`기본 설정`: 오버라이드 하고 싶은 경우  
