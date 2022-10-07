@@ -34,13 +34,17 @@ RUN echo "shiny:shiny" | chpasswd
 
 #server settings 
 WORKDIR /home/install
-COPY install_scripts ./install_scripts
+COPY install_scripts /home/install
 
 # install required packages 
-RUN R -f install_scripts/install_packages.R 
+RUN R -f ./install_packages.R 
 
 # install shinylive, quarto, etc.
-RUN install_scripts/install_packages.sh
+RUN ./install_packages.sh
+
+#change shiny user directory and sudouer 
+RUN usermod -d /home/bit-server shiny
+RUN usermod -aG sudo shiny
 
 # setup workspace 
 RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
@@ -48,12 +52,12 @@ RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 WORKDIR /home/bit-server
 RUN chown shiny:shiny -R /home/bit-server
 
-#change shiny user directory and sudouer 
-RUN usermod -d /home/bit-server shiny
-RUN usermod -aG sudo shiny
 
 # shiny-server apache2 apache2-ssl ssh
-EXPOSE 3838 80 443 22 
+EXPOSE 80 443 22 3838 
+
+# additional apache setting
+RUN a2enmod proxy proxy_http proxy_wstunnel
 
 ## 패치 및 설정 반영 
 CMD ["bash", "/home/bit-server/scripts/update.sh"]
