@@ -13,7 +13,7 @@ install2.r DBI DT DiagrammeR R6 RColorBrewer Rcpp Rttf2pt1 askpass assertthat
 install2.r backports base64enc bit bit64 blob broom      
 install2.r bslib cachem callr cellranger checkmate classInt    
 install2.r cli clipr colourpicker colorspace commonmark cpp11 crayon crosstalk curl        
-install2.r data.table dbplyr digest dlookr downloader dplyr dtplyr 
+install2.r data.table dbplyr digest dlookr downloader dplyr dtplyr digest
 install2.r e1071 ellipsis evaluate extrafont extrafontdb 
 install2.r fansi farver fastmap flextable fontawesome forcats fresh fs 
 install2.r gargle gdtools generics ggplot2 glue googledrive googlesheets gridExtra gtable
