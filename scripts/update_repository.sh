@@ -10,3 +10,5 @@ else
 	sudo -u shiny git pull 
 	popd 
 fi
+
+  
