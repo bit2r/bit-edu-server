@@ -1,4 +1,5 @@
-FROM tattvafoundation/shinyserver_21052022:latest
+#FROM tattvafoundation/shinyserver_21052022:latest
+FROM rocker/shiny:latest
 LABEL maintainer="joygram <joygram@gmail.com>"
 
 RUN apt update
@@ -58,6 +59,9 @@ EXPOSE 80 443 22 3838
 
 # additional apache setting
 RUN a2enmod proxy proxy_http proxy_wstunnel
+
+RUN chsh shiny -s /usr/bin/bash 
+RUN chsh root -s /usr/bin/bash 
 
 ## 패치 및 설정 반영 
 CMD ["bash", "/home/bit-server/scripts/update.sh"]

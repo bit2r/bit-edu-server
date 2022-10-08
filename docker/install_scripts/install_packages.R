@@ -12,6 +12,7 @@ install.packages("reticulate")
 install.packages("markdown")
 install.packages("rmarkdown")
 install.packages("tidyverse")
+install.packages("yaml")
 
 install.packages("sass")
 

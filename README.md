@@ -76,7 +76,7 @@ workspace --> docker : run
 
 - `기본 설정`:
 
-- 포트의 개방:
+- 포트의 연결:
 
   ```
   3838 -> 3939 
@@ -85,17 +85,19 @@ workspace --> docker : run
   22 -> 2222
   ```
 
-   
-
   ```
   ssh shiny@localhost -p 2222
   ```
 
-  ```
-  apache2/sites-enabled
-  ```
-
 ```
 conf/넣어 오버라이드 하거나 한다. 
+```
+
+```
+by default, renv creates project libraries that cannot be moved to a different machine or even user account, due to its reliance on a global cache that sits outside of the project directory. This is exactly the behavior that you want if you're doing local development, but it is problematic for your scenario.
+
+Fortunately, renv includes a solution for this problem. On the development machine, inside the project, call renv::isolate() and this will remove the reliance on the cache. You should then copy the entire project directory, including the project-specific .Rprofile, to the server.
+
+Hope that helps.
 ```
 
