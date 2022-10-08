@@ -1,3 +1,5 @@
+
+
 # OS와 무관한 데이터 과학 개발 환경 구성
 
 ## bit-server
@@ -74,23 +76,27 @@ bit_server --> workspace : clone
 workspace --> docker : run
 ```
 
-- `기본 설정`:
 
-- 포트의 연결:
 
-  ```
-  3838 -> 3939 
-  80 -> 8080
-  443 -> 8443
-  22 -> 2222
-  ```
+### 포트 개방 :
 
-  ```
-  ssh shiny@localhost -p 2222
-  ```
+```
+3838 -> 3939 
+80 -> 8080
+443 -> 8443
+22 -> 2222
+```
+
+### SSH 연결 
+
+```
+ssh shiny@localhost -p 2222
+```
 
 ```
 conf/넣어 오버라이드 하거나 한다. 
+
+RUN install.r shiny forecast jsonlite ggplot2 htmltools
 ```
 
 ```
@@ -99,5 +105,33 @@ by default, renv creates project libraries that cannot be moved to a different m
 Fortunately, renv includes a solution for this problem. On the development machine, inside the project, call renv::isolate() and this will remove the reliance on the cache. You should then copy the entire project directory, including the project-specific .Rprofile, to the server.
 
 Hope that helps.
+
+Eventually what I did instead of actually copying the contents of the renv directory from the dev to prod server was to log into the production server, get into the app's directory. Then run R, and use renv::restore and then renv::isolate. I find it to be somewhat easier and hence preferable than copying directories from one location to the other.
 ```
+
+
+
+의존성 
+
+```dockerfile
+RUN install.r shiny forecast jsonlite ggplot2 htmltools
+```
+
+
+
+## Reference 
+
+```
+Running Shiny Server in Docker
+https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
+https://github.com/analythium/covidapp-shiny
+
+Running Shiny Server in Docker
+https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
+
+Shiny on Google Cloud Run - Scale-to-Zero R Web Apps
+https://code.markedmondson.me/shiny-cloudrun/
+```
+
+
 

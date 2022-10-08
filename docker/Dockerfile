@@ -1,4 +1,3 @@
-#FROM tattvafoundation/shinyserver_21052022:latest
 FROM rocker/shiny:latest
 LABEL maintainer="joygram <joygram@gmail.com>"
 
