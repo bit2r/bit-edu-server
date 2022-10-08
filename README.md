@@ -67,12 +67,18 @@ repository git주소
 respsitory git주소
 ```
 
+
+
+## 저장소 자체가 개발 환경이 된다 
+
+
+
 저장소가 없으면 clone 있으면 sync를 수행한다.
 
 ```mermaid
-stateDiagram-v2
-[*] --> bit_server : clone
-bit_server --> workspace : clone 
+sequenceDiagram
+host -->> workspace : clone
+bit_server -->> workspace : read & service
 workspace --> docker : run
 ```
 
@@ -116,6 +122,22 @@ Eventually what I did instead of actually copying the contents of the renv direc
 ```dockerfile
 RUN install.r shiny forecast jsonlite ggplot2 htmltools
 ```
+
+```
+install.r 
+```
+
+## 컨테이너 
+
+생성한 컨테이너를 지우지만 않으면 기본 환경 구성은 유지가 된다. 
+
+따로 생성한 컨테이너를 보관하고 싶은 경우 
+
+```
+docker commit 
+```
+
+구성한 이미지를 올려서 배포 할 수 있다 
 
 
 
