@@ -16,6 +16,6 @@ service apache2 start
 #run mysqld 
 service mysql start 
 
-R -e "options(renv.consent = TRUE);renv::restore(lockfile = '/home/bit-server/workspace/renv.lock'))"
+R -e "options(renv.consent = TRUE);renv::restore(lockfile = '/home/bit-server/workspace/renv.lock')"
 
 exec sudo -u shiny shiny-server
