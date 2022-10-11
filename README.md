@@ -157,3 +157,22 @@ https://code.markedmondson.me/shiny-cloudrun/
 
 
 
+```
+As you've found out, you are stuck once the package is loaded. R doesn't behave well when unloading a pkg that another pkg uses directly.
+
+I'm also guessing that you can't use callr::r to do calculations. This would launch a new process and you'd get control over which pkgs are loaded. But would only work as a on off calculator, not an interactive R session.
+
+You said the Shiny Server is run by the university. I'm wondering if you can ask the admin to add this line to the config: (replace shiny with whichever user they are currently using)
+
+location /zeolite/rpauloo  {
+  run_as :HOME_USER: shiny;
+}
+Docs: https://support.rstudio.com/hc/en-us/articles/214771447-Shiny-Server-Administrator-s-Guide#run_as
+
+This should run the apps in your folder under your user name, which should then load your ~/.Rprofile, which would allow you to set the appropriate .libPaths().
+
+It is worth an ask to your admin. You're not asking for sudo privileges, just your existing user privileges.
+
+If they already do this, make sure you have a ~/.Rprofile that adds your correct .libPath().
+```
+
