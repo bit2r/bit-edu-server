@@ -5,7 +5,7 @@ TARGET_SHINY_CONF=/etc/shiny-server/shiny-server.conf
 TARGET_APACHE_CONF=/etc/apache2
 
 cp ./shiny-server/shiny-server.conf $TARGET_SHINY_CONF
-cp -R /apache2/* $TARGET_APACHE_CONF
+cp -R ./apache2/* $TARGET_APACHE_CONF
 
 echo == apply custom conf == 
 # apply custom shiny-server config
