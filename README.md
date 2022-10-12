@@ -1,6 +1,6 @@
 
 
-# OS와 무관한 데이터 과학 개발 환경 구성
+# OS와 무관한 데이터 과학 `개발 환경` 구성
 
 
 
@@ -10,7 +10,9 @@
 Don't reinvent the wheel
 ```
 
-여러 선배님들과 엔니지어 분들이 이 원칙을  잘 준수하여 준 덕분에 소프트웨어의 모듈화, 패키지화는 잘 실현이 되었습니다. 
+여러 선배님들과 엔니지어 분들이 이 원칙을  잘 준수하여 준 덕분에 현재 소프트웨어의 생태계(eco system)는 어느때보다 잘 실현이 되었다고 봅니다. 
+
+
 
 ### 패키지 매니져 
 
@@ -30,29 +32,54 @@ Don't reinvent the wheel
 
 
 
+### 도커 이미지의 재사용 
+
+코드 / 학습 데이터뿐만 아니라 기존 구성한 도커 이미지의 재사용도 여러의미에서 매우 유의미한 방법입니다.  이미지의 재사용을 통해 얻을 수 있는 장점은 다음과 같습니다.
+
+- 적은 시간으로 이미지를 만들 수 있다. 
+- 자신만을 위한 이미지 튜닝을 손쉽게 할 수 있다.
+
+처음부터 환경을 구성하는 것도 좋은 생각이지만 안정적인 `수레바퀴`가 있다면 사용해보는 것도 좋겠지요. 기왕이면 official한 이미지를 사용하는 것이 후에 유지보수나 업데이트에도 좋을 것입니다. 
+
+R과 관련된 이미지는 다음과 같습니다. 
+
+
+
+ref: running-shiny-server-in-docker
+
+| Parent image    | Parent size (GB) | Final size (GB) | Bild time (min) |
+| --------------- | ---------------- | --------------- | --------------- |
+| rhub/r-minimal  | 0.035            | 0.222           | 27.0            |
+| rocker/r-base   | 0.761            | 1.050           | 2.9             |
+| rocker/r-ubuntu | 0.673            | 1.220           | 3.1             |
+| rstudio/r-base  | 0.894            | 1.380           | 3.1             |
+| rocker/shiny    | 1.380            | 1.610           | 2.3             |
+
+이중에서 우리는 `rocker/shiny`이미지를 기반으로 확장해나갈 것입니다. 
+
+
+
+## 무엇을 하기 위해서 인가?
+
+여러가지 업무를 수행하다보니 다음과 같은 요구사항이 발생하였습니다.  
+
+- 업무 환경이 항상 동일하지 않다. 
+- 작업하던 환경이 유지되면 좋겠다. 
+- 배포와 테스트 사이클이 빨랐으면 좋겠다.
+- 사소한 변경으로 도커 이미지 생성을 피하고 싶다. 
+- 환경과 코드가 통합되었으면 좋겠다. 
+
+그것을 위하여 완전하지는 않지만 초심자로써는 만족할 만한 성과를 냈습니다. 
+
+ 
+
 ## bit-server
 
-software 개발환경의 복잡도가 올라감에 따라서 환경의 독립성을 유지 시키면서 개발하려는 구성이
+환경을 재구성하는 방법은 앞서 소개한 것과 같이 `가상환경`으로도 충분히 극복할 수가 있습니다. 하지만 소프트웨어의 규모거 더 커지거나 추가 환경을 단일머신에 활용하려다보면 또다른 충돌이 일어나게 됩니다. 대표적인 것으로는`데이터베이스`, `웹서버`등의 솔류션이라고 할 수 있습니다. 
 
-프로그래밍 언어 전반에 걸쳐 정착 단계에 있다고 보여진다.
+이미 훌륭한 환경이 구성되어있어 어떤 컨테이너를 어떻게 조합하느냐의 문제만 남아있습니다.  여기서 소개하고 싶은 내용은 컨테이너 조합에 대한 부분을 넘어서 `개발 환경`이 곧 `배포 환경`될 수 있도록 구성하고하 하는데 그 의의가 있습니다. 
 
-conda, renv 등이 그 대표적인 것이 되겠다.
-
-심플한 애플리케이션을 개발하고 테스트하고 배포하는 환경은 이미 완벽하리 만큼 잘 구성되어 있다.
-
-하지만 좀 더 규모가 있는 애플리케이션을 개발하고 배포하고자 하거나 독립적인 환경을 구성하고자 할 때는
-
-현재 shiny-app이 가진 특성상 환경 구성을 계획하는데 어려움을 겪는 사례가 종종 보인다.
-
-
-
-### 여러 클라이언트 장비를 가지고 접근 개발해야 하는 경우
-
-클라이언트 OS가 각각 달라지는 경우 매번 라이브러리 환경을 구성하고 필요한 툴을 설치하는 과정이 필요하게 된다.
-
-os별로 환경을 구성하는 것도 불편하다.
-
-작업 머신이 노트북 / 데스크톱으로 자주 바뀌는 환경이라면 더욱 그러할 것이다.
+ 
 
 도커와 vscode, github을 이용한 구성
 
@@ -131,33 +158,15 @@ ssh shiny@localhost -p 2222
 
 ```
 conf/넣어 오버라이드 하거나 한다. 
-
-RUN install.r shiny forecast jsonlite ggplot2 htmltools
 ```
 
 ```
-by default, renv creates project libraries that cannot be moved to a different machine or even user account, due to its reliance on a global cache that sits outside of the project directory. This is exactly the behavior that you want if you're doing local development, but it is problematic for your scenario.
-
-Fortunately, renv includes a solution for this problem. On the development machine, inside the project, call renv::isolate() and this will remove the reliance on the cache. You should then copy the entire project directory, including the project-specific .Rprofile, to the server.
-
-Hope that helps.
-
-Eventually what I did instead of actually copying the contents of the renv directory from the dev to prod server was to log into the production server, get into the app's directory. Then run R, and use renv::restore and then renv::isolate. I find it to be somewhat easier and hence preferable than copying directories from one location to the other.
-```
-
-
-
-의존성 
-
-```dockerfile
-RUN install.r shiny forecast jsonlite ggplot2 htmltools
-```
 
 ```
-install.r 
-```
 
-## 컨테이너 
+ 
+
+## 컨테이너 관리 
 
 생성한 컨테이너를 지우지만 않으면 기본 환경 구성은 유지가 된다. 
 
@@ -183,26 +192,5 @@ https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
 
 Shiny on Google Cloud Run - Scale-to-Zero R Web Apps
 https://code.markedmondson.me/shiny-cloudrun/
-```
-
-
-
-```
-As you've found out, you are stuck once the package is loaded. R doesn't behave well when unloading a pkg that another pkg uses directly.
-
-I'm also guessing that you can't use callr::r to do calculations. This would launch a new process and you'd get control over which pkgs are loaded. But would only work as a on off calculator, not an interactive R session.
-
-You said the Shiny Server is run by the university. I'm wondering if you can ask the admin to add this line to the config: (replace shiny with whichever user they are currently using)
-
-location /zeolite/rpauloo  {
-  run_as :HOME_USER: shiny;
-}
-Docs: https://support.rstudio.com/hc/en-us/articles/214771447-Shiny-Server-Administrator-s-Guide#run_as
-
-This should run the apps in your folder under your user name, which should then load your ~/.Rprofile, which would allow you to set the appropriate .libPaths().
-
-It is worth an ask to your admin. You're not asking for sudo privileges, just your existing user privileges.
-
-If they already do this, make sure you have a ~/.Rprofile that adds your correct .libPath().
 ```
 
