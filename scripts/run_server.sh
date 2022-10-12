@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-souce ./copy_conf.sh
+bash ./copy_conf.sh
 
 echo == run servers ==
 # run sshd 
