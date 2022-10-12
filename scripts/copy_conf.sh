@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-
+echo == copy conf === 
 # update docker's config 
 TARGET_SHINY_CONF=/etc/shiny-server/shiny-server.conf
 TARGET_APACHE_CONF=/etc/apache2
