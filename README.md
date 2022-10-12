@@ -202,31 +202,31 @@ ssh shiny@localhost -p 4444
 
 이렇게 하였을 때 `여러종류의 웹서비스`를 하나의 통합된 사이트를 통해 연결할 수 있습니다.
 
-기본 설정은 다음과 같이 되어 있으며     
+### shiny-server와의 통합 
 
-```
+기본 설정은 다음과 같이 되어 있으며 `/shiny/` 로 접근하면 `shiny-server`로 pass해주도록 합니다. shinyApp의 경우 `websocket`을 사용하므로 관련 설정을 함께 포함하여 주어야 합니다. 
+
+```apache
 <VirtualHost *:80>
-        ProxyRequests Off
-        ProxyPreserveHost On
-        
-		# shiny app redirect 
-        RewriteEngine on
-        RewriteCond %{HTTP:Upgrade} =websocket
-        RewriteRule /shiny/(.*) ws://localhost:3838/$1 [P,L]
-        RewriteCond %{HTTP:Upgrade} !=websocket
-        RewriteRule /shiny/(.*) http://localhost:3838/$1 [P,L]
-        ProxyPass /shiny/ http://localhost:3838/
-        ProxyPassReverse /shiny/ http://localhost:3838/
-        ProxyRequests Off
-        
-        #jupyter
-        ProxyPass /api/kernels/ ws://localhost:5000/api/kernels/
-    	ProxyPassReverse /api/kernels/ http://localhost:5000/api/kernels/
+    DocumentRoot /home/bit-server/workspace/html
+    ProxyRequests Off
+    ProxyPreserveHost On
 
-    	ProxyPass /jupyter/ http://localhost:5000/
-    	ProxyPassReverse /jupyter/ http://localhost:5000/
+    # shiny app redirect 
+    RewriteEngine on
+    RewriteCond %{HTTP:Upgrade} =websocket
+    RewriteRule /shiny/(.*) ws://localhost:3838/$1 [P,L]
+    RewriteCond %{HTTP:Upgrade} !=websocket
+    RewriteRule /shiny/(.*) http://localhost:3838/$1 [P,L]
+    ProxyPass /shiny/ http://localhost:3838/
+    ProxyPassReverse /shiny/ http://localhost:3838/
+    ProxyRequests Off
 </VirtualHost>
 ```
+
+### 웹서버 디렉토리 
+
+기본 웹디렉토리는 `workspace/html` 이하에 두도록 하였습니다. 필요한 html파일이 있다면 그곳에 배포하여 주시면 됩니다. 그외 접근하고자 하는 설정이 있다면 `apache2`설정을 추가하여 설정하여 주시면 됩니다. 
 
 
 
@@ -246,7 +246,47 @@ ssh shiny@localhost -p 4444
 
 ## 도커 환경 `라이브 패치`가 가능하다
 
+`bit-server` git은 도커 이미지를 다시 빌드하지 않고 스크립트 및 설정을 `라이브 패치`가 가능하도록 구성하였습니다.
+
+저장소에 커밋을 하면 재시작시 라이브 패치를 진행합니다.  즉, 최신버젼의 서버 설정 등이 있다면 자연스럽게 반영이 되겠지요. 
+
 ![image-20221012112751107](README.assets/image-20221012112751107.png)
+
+### 개인 환경에 맞게 좀 더 커스텀하고 싶다면
+
+#### workspace에 커스텀 설정을 추가합니다. 
+
+현재는 shiny-server와 apache2 서버의 커스텀 설정을 설정할 수 있도록 하였습니다. 
+
+workspcae가 배포환경이라면 배포환경의 workspace에 복사하여 주도록 합니다. 
+
+```
+bit-server/workspace/conf/
+	shiny-server/
+	apache2/
+```
+
+
+
+#### 저장소를 `fork`하여 기본 저장소 구성 스크립트를 수정하여 줍니다.
+
+라이브 패치가 가능하도록 구성하고 싶다면 `저장소`를 fork하여 구성 스크립트를 수정하여 줍니다.  
+
+```bash
+# bit-server/scripts/update_repository.sh
+#!/usr/bin/bash
+if [ ! -d /home/bit-server ]; then
+	echo == git clone == 
+	sudo -u shiny git clone https://github.com/joygram/bit-server.git /home/bit-server
+else 
+	echo == git repository update ==
+	pushd .
+	cd /home/bit-server
+	sudo -u shiny git reset --hard
+	sudo -u shiny git pull 
+	popd 
+fi
+```
 
 
 
