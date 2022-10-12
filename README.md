@@ -205,6 +205,14 @@ ssh shiny@localhost -p 2222
 
 ### jupyter 
 
+
+
+## 도커 환경 패치가 가능하다
+
+![image-20221012112751107](README.assets/image-20221012112751107.png)
+
+
+
 ## workspace의 관리 
 
 ### 배포방식을 결정할 수 있다. 
