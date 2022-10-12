@@ -130,6 +130,38 @@ workspace --> docker : run
 
 
 
+## Docker Desktop 설치하기 
+
+`Docker Desktop`은 windows / mac OS 환경에서 완벽하게 동작합니다.  docker desktop이 있으면 상태나 컨테이너 연결을 빠르고 쉽게 접근할 수 있습니다.  특히 이미지를 실행하여 컨테이너화 할 때 오류등을 찾아낼 때 유용하게 사용할 수 있습니다. 
+
+ 아래 링크를 통해 다운로드 하고 설치를 진행합니다. 
+
+```
+https://docs.docker.com/desktop/install/mac-install/
+https://docs.docker.com/desktop/install/windows-install/
+```
+
+`windows os`의 경우 `wsl2`기반으로 운용이 되기 때문에 해당 환경을 반드시 구성하여야 합니다. 
+
+### Docker 사용시 고려사항 
+
+여러개의 OS환경을 동시에 운용할 수 있는 장점이 있는 반면 머신의 리소스를 많이 사용하게 되므로(특히 메모리), 도커 인스턴스의 자원에 대한 설정등을 필요한 만큼 할당하여 사용하도록 관리하는 것이 필요하다는 것을 기억해두시면 좋습니다. 
+
+```
+Runtime options with Memory, CPUs, and GPUs
+https://docs.docker.com/config/containers/resource_constraints/
+```
+
+
+
+## Visual Studio Code 설치하기 
+
+visual studio code는 개발환경이 `원격`,`로컬`유무에 따라 내부 확장(extension)을 설치하는 방식이 달라집니다. 특히 원격 개발을 진행할 때에는 자체적으로 visual studio code 서버를 구동 시키며 `ssh` 포트 포워딩을 자동으로 수행하여 줍니다. 
+
+### ssh를 통한 원격 연결 구성 
+
+
+
 ### bit-server 내려받기
 
 ```
@@ -150,7 +182,7 @@ respsitory git주소
 ### 포트 개방 :
 
 ```
-3838 -> 3939 
+3838 -> 3939
 80 -> 8080
 443 -> 8443
 22 -> 2222
@@ -159,16 +191,21 @@ respsitory git주소
 ### SSH 연결 
 
 ```
-ssh shiny@localhost -p 2222
+ssh shiny@localhost -p 4444
 ```
 
 
 
-웹서비스와 통합 
+## 웹서비스와 통합 
+
+웹서비스와 shiny-server서비스를 `같은 포트`로 서비스하고자 하는 경우 `proxy`와 `rewrite`모듈을 활용하여 연동하여 주도록 합니다. 
+
+이렇게 하였을 때 `여러종류의 웹서비스`를 하나의 통합된 사이트를 통해 연결할 수 있습니다.
+
+기본 설정은 다음과 같이 되어 있으며     
 
 ```
-<VirtualHost *:9090>
-        ServerName bit-server
+<VirtualHost *:80>
         ProxyRequests Off
         ProxyPreserveHost On
         
@@ -207,7 +244,7 @@ ssh shiny@localhost -p 2222
 
 
 
-## 도커 환경 패치가 가능하다
+## 도커 환경 `라이브 패치`가 가능하다
 
 ![image-20221012112751107](README.assets/image-20221012112751107.png)
 
@@ -253,5 +290,8 @@ https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
 
 Shiny on Google Cloud Run - Scale-to-Zero R Web Apps
 https://code.markedmondson.me/shiny-cloudrun/
+
+Docker docs 
+https://docs.docker.com 
 ```
 
