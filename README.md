@@ -2,7 +2,7 @@
 
 # OS와 무관한 데이터 과학 `개발 환경` 구성
 
-
+[toc]
 
 ## 컨테이너 기반 환경 구성 
 
@@ -68,10 +68,26 @@ ref: running-shiny-server-in-docker
 - 배포와 테스트 사이클이 빨랐으면 좋겠다.
 - 사소한 변경으로 도커 이미지 생성을 피하고 싶다. 
 - 환경과 코드가 통합되었으면 좋겠다. 
+- 환경을 세팅하는 방식을 `OS마다` 설명을 해줘야 한다.
 
-그것을 위하여 완전하지는 않지만 초심자로써는 만족할 만한 성과를 냈습니다. 
+그것을 위하여 완전하지는 않지만 `초심자`로써는 만족할 만한 성과를 냈습니다. 
 
  
+
+## 저장소 자체가 개발 환경이 된다 
+
+
+
+저장소가 없으면 clone 있으면 sync를 수행한다.
+
+```mermaid
+sequenceDiagram
+host -->> workspace : clone
+bit_server -->> workspace : read & service
+workspace --> docker : run
+```
+
+
 
 ## bit-server
 
@@ -79,7 +95,14 @@ ref: running-shiny-server-in-docker
 
 이미 훌륭한 환경이 구성되어있어 어떤 컨테이너를 어떻게 조합하느냐의 문제만 남아있습니다.  여기서 소개하고 싶은 내용은 컨테이너 조합에 대한 부분을 넘어서 `개발 환경`이 곧 `배포 환경`될 수 있도록 구성하고하 하는데 그 의의가 있습니다. 
 
- 
+ ### 포함하고 있는 환경 
+
+- nodejs / php / apache2 / mysql(mariadb) 
+- shiny-server / R and R package 
+- qurto / tex / vim 
+- python3 / shinylive
+
+
 
 도커와 vscode, github을 이용한 구성
 
@@ -95,7 +118,7 @@ ref: running-shiny-server-in-docker
   - vscode web (github과의 궁합) 확인
 - 원격서버에 배포
 - 로컬 환경에서 사용
-- os와 무관한 원격 개발환경
+- 원격 개발환경
 
 언제 좋을까?
 
@@ -105,38 +128,21 @@ ref: running-shiny-server-in-docker
 
 개발한 패키지를 컨테이너 단위로 배포하고자 할때
 
-## bit-server 내려받기
+
+
+### bit-server 내려받기
 
 ```
 git clone https://github.com/joygram/bit-server.git
 ```
 
-포함하고 있는 환경
-
-- nodejs / php / mysql(mariadb) / shiny-server / R and R package / qurto / tex / apache2 / vim / python3 / shinylive
-
-## 프로젝트 연결하기
+### 프로젝트 연결하기
 
 작업하고자 하는 `git`프로젝트의 저장소와 token 설정을 한다.
 
 ```
 repository git주소 
 respsitory git주소
-```
-
-
-
-## 저장소 자체가 개발 환경이 된다 
-
-
-
-저장소가 없으면 clone 있으면 sync를 수행한다.
-
-```mermaid
-sequenceDiagram
-host -->> workspace : clone
-bit_server -->> workspace : read & service
-workspace --> docker : run
 ```
 
 
@@ -156,15 +162,62 @@ workspace --> docker : run
 ssh shiny@localhost -p 2222
 ```
 
-```
-conf/넣어 오버라이드 하거나 한다. 
-```
+
+
+웹서비스와 통합 
 
 ```
+<VirtualHost *:9090>
+        ServerName bit-server
+        ProxyRequests Off
+        ProxyPreserveHost On
+        
+		# shiny app redirect 
+        RewriteEngine on
+        RewriteCond %{HTTP:Upgrade} =websocket
+        RewriteRule /shiny/(.*) ws://localhost:3838/$1 [P,L]
+        RewriteCond %{HTTP:Upgrade} !=websocket
+        RewriteRule /shiny/(.*) http://localhost:3838/$1 [P,L]
+        ProxyPass /shiny/ http://localhost:3838/
+        ProxyPassReverse /shiny/ http://localhost:3838/
+        ProxyRequests Off
+        
+        #jupyter
+        ProxyPass /api/kernels/ ws://localhost:5000/api/kernels/
+    	ProxyPassReverse /api/kernels/ http://localhost:5000/api/kernels/
 
+    	ProxyPass /jupyter/ http://localhost:5000/
+    	ProxyPassReverse /jupyter/ http://localhost:5000/
+</VirtualHost>
 ```
 
- 
+
+
+## 테스트 프로젝트  
+
+### shinyApp
+
+### learnR 
+
+### quarto 
+
+### shinyLive 
+
+### jupyter 
+
+## workspace의 관리 
+
+### 배포방식을 결정할 수 있다. 
+
+포함시킬수도 있고 외부에서 관리할 수 있습니다. 하나의 컨테이너로 포장하고 싶을 경우에는 기존 Docker파일을 수정 & 확장하여 사용하면 됩니다. 
+
+능동적인 패치를 원하는 경우 이미지 단위 패치가 아니라 `workspace`단위 패치를 수행할 수 있습니다.  
+
+### 같은 환경 여러 환경의 컨테이너가 필요한 경우
+
+ `run` 스크립트를 확장 변경하여 사용하도록 한다. 
+
+
 
 ## 컨테이너 관리 
 
