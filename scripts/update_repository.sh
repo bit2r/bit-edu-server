@@ -14,11 +14,11 @@ fi
 # initialize workspace template
 TEMPLATE_PATH=/home/bit-server/scripts/workspace_template
 WORKSPACE_PATH=/home/bit-server/worksapce
-if [[ ! -d "$WORKSPACE/html" ]]; then
-	cp -R $TEMPLATE_PATH/html $WORKSPACE
+if [[ ! -d "$WORKSPACE_PATH/html" ]]; then
+	cp -R $TEMPLATE_PATH/html $WORKSPACE_PATH
 fi 
 
-if [[ ! -d "$WORKSPACE/conf" ]]; then
-	cp -R $TEMPLATE_PATH/conf $WORKSPACE
+if [[ ! -d "$WORKSPACE_PATH/conf" ]]; then
+	cp -R $TEMPLATE_PATH/conf $WORKSPACE_PATH
 fi 
 a2enmod rewrite 
