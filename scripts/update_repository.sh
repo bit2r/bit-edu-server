@@ -21,4 +21,3 @@ fi
 if [[ ! -d "$WORKSPACE_PATH/conf" ]]; then
 	cp -R $TEMPLATE_PATH/conf $WORKSPACE_PATH
 fi 
-a2enmod rewrite 
