@@ -15,5 +15,6 @@ fi
 TEMPLATE_PATH=/home/bit-server/scripts/workspace_template
 WORKSPACE_PATH=/home/bit-server/worksapce
 if [[ ! -d "$WORKSPACE_PATH/html" ]]; then
+	echo copy $TEMPLATE_PATH $WORKSPACE_PATH 
 	cp -R $TEMPLATE_PATH $WORKSPACE_PATH
 fi 
