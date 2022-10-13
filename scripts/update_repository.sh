@@ -12,6 +12,7 @@ else
 fi
 
 # initialize workspace template
+echo try initialize workspace ... 
 TEMPLATE_PATH=/home/bit-server/scripts/workspace_template
 WORKSPACE_PATH=/home/bit-server/worksapce
 if [[ ! -d "$WORKSPACE_PATH/html" ]]; then
