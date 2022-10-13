@@ -15,7 +15,7 @@ if [[ -f "$CUSTOM_SHINY_CONF" ]]; then
 fi 
 
 # apply custom apache config 
-CUSTOM_APACHE_CONF=/home/bit-server/workspace/conf/apache2/*
-if [[ -d "$TARGET_APACHE_CONF" ]]; then
+CUSTOM_APACHE_CONF=/home/bit-server/workspace/conf/apache2/
+if [[ -d "$CUSTOM_APACHE_CONF" ]]; then
 	cp -R $CUSTOM_APACHE_CONF $TARGET_APACHE_CONF
 fi
