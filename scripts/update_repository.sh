@@ -11,4 +11,13 @@ else
 	popd 
 fi
 
-  
+# initialize workspace template
+TEMPLATE_PATH=/home/bit-server/scripts/workspace_template
+WORKSPACE_PATH=/home/bit-server/worksapce
+if [[! -d $WORKSPACE/html ]]
+	cp -R $TEMPLATE_PATH/html $WORKSPACE
+fi 
+
+if [[! -d $WORKSPACE/conf ]]
+	cp -R $TEMPLATE_PATH/conf $WORKSPACE
+fi 
