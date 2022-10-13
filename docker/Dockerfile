@@ -57,7 +57,7 @@ RUN chown shiny:shiny -R /home/bit-server
 EXPOSE 80 443 22 3838 
 
 # additional apache setting
-RUN a2enmod proxy proxy_http proxy_wstunnel
+RUN a2enmod proxy proxy_http proxy_wstunnel rewrite
 
 RUN chsh shiny -s /usr/bin/bash 
 RUN chsh root -s /usr/bin/bash 
