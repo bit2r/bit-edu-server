@@ -70,22 +70,15 @@ ref: running-shiny-server-in-docker
 - 환경과 코드가 통합되었으면 좋겠다. 
 - 환경을 세팅하는 방식을 `OS마다` 설명을 해줘야 한다.
 
-그것을 위하여 완전하지는 않지만 `초심자`로써는 만족할 만한 성과를 냈습니다. 
-
  
 
 ## 저장소 자체가 개발 환경이 된다 
 
+개발환경과 작업환경을 통합하게되면 
 
+- `협업 환경` 구성이 용이하게 됩니다.  
 
-저장소가 없으면 clone 있으면 sync를 수행한다.
-
-```mermaid
-sequenceDiagram
-host -->> workspace : clone
-bit_server -->> workspace : read & service
-workspace --> docker : run
-```
+- 본연의 업무에 집중할 수 있게 됩니다. 
 
 
 
@@ -97,37 +90,36 @@ workspace --> docker : run
 
  ### 포함하고 있는 환경 
 
-- nodejs / php / apache2 / mysql(mariadb) 
+- nodejs / php / apache2 / ssh / mysql(mariadb) 
 - shiny-server / R and R package 
 - qurto / tex / vim 
 - python3 / shinylive
 
 
 
-도커와 vscode, github을 이용한 구성
+## 워크플로우
+### 작업 흐름 
+```mermaid
+sequenceDiagram
+bit_server -->> bit_server : git clone
+bit_server -->> docker : docker run & live update
+workspace -->> docker : run 
+workspace -->> workspace : authoring
+docker -->> web_browser : execute
+```
 
-- 도커 개발 환경 구성
-
-  - docker desktop 설치 (mac / win)
-- github에서 개발환경 클론
-- shiny-server 기반 도커 환경
-- github에 workspace 만들기
-- vscode를 통한 원격환경 구성
-
-  - github계정으로 놀아보자
-  - vscode web (github과의 궁합) 확인
-- 원격서버에 배포
-- 로컬 환경에서 사용
-- 원격 개발환경
-
-언제 좋을까?
-
-통합환경 구성 패키지 설치등이 복잡할 때
-
-복잡한 통계 패키지 환경 구성이 필요할 때
-
-개발한 패키지를 컨테이너 단위로 배포하고자 할때
-
+### 관계 상태 흐름 
+```mermaid
+stateDiagram
+bit_server_git --> bit_server : git clone
+bit_server --> workspace
+projects --> workspace : clone project
+bit_server_git --> bit_server : live_update
+bit_server --> docker : run_bit_server
+workspace --> docker : mount
+docker --> broswer : live result 
+editor --> workspace : authoring
+```
 
 
 ## Docker Desktop 설치하기 
@@ -179,13 +171,21 @@ respsitory git주소
 
 
 
-### 포트 개방 :
+### Docker 포트 개방 및 매핑:
 
+ssh: 원격 개발
+
+웹: 실행환경  
+
+#### basic 
 ```
-3838 -> 3939
-80 -> 8080
-443 -> 8443
-22 -> 2222
+apache2 : 80 -> 8080
+ssh: 22 -> 4444
+```
+#### advanced 
+```
+apache2 : 443 -> 8443
+shiny-server : 3838 -> 3939
 ```
 
 ### SSH 연결 
@@ -234,13 +234,21 @@ ssh shiny@localhost -p 4444
 
 ### shinyApp
 
+- guess_number 
+
 ### learnR 
 
-### quarto 
+- https://github.com/Public-Health-Scotland/rmarkdown-training-online.git
+
+### quarto
+
+- bit-server quarto site  
+
+- presentation 
 
 ### shinyLive 
 
-### jupyter 
+- shinyelive clone & build
 
 
 
@@ -298,23 +306,22 @@ fi
 
 능동적인 패치를 원하는 경우 이미지 단위 패치가 아니라 `workspace`단위 패치를 수행할 수 있습니다.  
 
-### 같은 환경 여러 환경의 컨테이너가 필요한 경우
-
- `run` 스크립트를 확장 변경하여 사용하도록 한다. 
 
 
 
-## 컨테이너 관리 
 
-생성한 컨테이너를 지우지만 않으면 기본 환경 구성은 유지가 된다. 
 
-따로 생성한 컨테이너를 보관하고 싶은 경우 
+## 컨테이너 관리  
+
+생성한 컨테이너를 지우지만 않으면 기본 환경 구성은 유지가 됩니다. 지속적인 사용이 가능한 것이지요. 
+
+흔한 일은 아니지만 컨테이너를 삭제하는 일은 컴퓨터에 설치한 OS를 제거하는 것과 같은 행위로 추가적인 작업환경을 잃을 수도 있므로 
+
+도커 컨테이너에 추가적인 환경을 유지하고 싶은 경우에는 저장하고 그것을 따로 배포하는 방식의 용도로 사용할 수 있습니다. 
 
 ```
 docker commit 
 ```
-
-구성한 이미지를 올려서 배포 할 수 있다 
 
 
 
@@ -332,6 +339,9 @@ Shiny on Google Cloud Run - Scale-to-Zero R Web Apps
 https://code.markedmondson.me/shiny-cloudrun/
 
 Docker docs 
-https://docs.docker.com 
+https://docs.docker.com
+
+Quarto
+https://quarto.org
 ```
 
