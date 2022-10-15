@@ -50,6 +50,7 @@ RUN usermod -aG sudo shiny
 RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 
 WORKDIR /home/bit-server
+RUN cp /home/install/.bash* /home/bit-server
 RUN chown shiny:shiny -R /home/bit-server
 
 
