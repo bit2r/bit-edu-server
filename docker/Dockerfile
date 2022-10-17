@@ -10,7 +10,10 @@ RUN apt-get install -y \
 	fonts-nanum \
 	fonts-unfonts-extra \
 	tzdata \
-	openssh-server
+	openssh-server \
+	gdebi-core \
+	r-base 
+
 
 RUN apt-get update 
 RUN apt-get install -y vim 
