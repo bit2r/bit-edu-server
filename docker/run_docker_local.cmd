@@ -1,1 +1,2 @@
-docker run -d --rm -p 9090:80 -p 4444:22 -p 3939:3838 -p 8443:443  -v "%cd%\..\workspace:/home/bit-server/workspace" bit-server-local
+@call .\env.cmd 
+docker run -d --rm -p %WEB_PORT%:80 -p %SSH_PORT%:22 -p %SHINY_PORT%:3838  -p %SSL_PORT%:443 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" bit-server-local
