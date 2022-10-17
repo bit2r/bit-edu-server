@@ -31,7 +31,6 @@ Don't reinvent the wheel
 컨테디너 기반 환경구성의 필요성이 대두된 것은 어제 오늘 일은 아닙니다. 이전에는 `가상머신` 기반의 구성으로 os기반을 확장하였으나 그것이 점차 `컨테이너 기반 방식`으로 변화하게 됩니다. 컴퓨팅 환경의 변화와 맞물린다고 볼 수 있는 점으로 `가상머신`은 낮은 레벨로 내려가고  여러 소프트웨어 패키지 군을 독립적이고 유연하게 구성하고 연계할 수 있는 방식을 채택하고 있는 것으로 판단하여 볼 수 있습니다.  
 
 
-
 ### 도커 이미지의 재사용 
 
 코드 / 학습 데이터뿐만 아니라 기존 구성한 도커 이미지의 재사용도 여러의미에서 매우 유의미한 방법입니다.  이미지의 재사용을 통해 얻을 수 있는 장점은 다음과 같습니다.
@@ -107,19 +106,6 @@ ref: running-shiny-server-in-docker
 
 
 
-## 워크플로우
-### workspace 흐름 
-```mermaid
-sequenceDiagram
-bit_server -->> bit_server : git clone
-bit_server -->> docker : docker run & live update
-workspace -->> docker : run 
-workspace -->> workspace : authoring
-docker -->> web_browser : execute
-```
-
-
-
 ## Docker Desktop 설치하기 
 
 `Docker Desktop`은 windows / mac OS 환경에서 완벽하게 동작합니다.  docker desktop이 있으면 상태나 컨테이너 연결을 빠르고 쉽게 접근할 수 있습니다.  특히 이미지를 실행하여 컨테이너화 할 때 오류등을 찾아낼 때 유용하게 사용할 수 있습니다. 
@@ -142,63 +128,91 @@ Runtime options with Memory, CPUs, and GPUs
 https://docs.docker.com/config/containers/resource_constraints/
 ```
 
+#### windows에서 wsl2연동 후 메모리 제한하기 
 
+```
+code %USERPROFILE%\.wslconfig 
+```
+`.wslconfig`
 
-## Visual Studio Code 설치하기 
+```
+[wsl2]
 
-visual studio code는 개발환경이 `원격`,`로컬`유무에 따라 내부 확장(extension)을 설치하는 방식이 달라집니다. 특히 원격 개발을 진행할 때에는 자체적으로 visual studio code 서버를 구동 시키며 `ssh` 포트 포워딩을 자동으로 수행하여 줍니다. 
+# Limits VM memory to use no more than 8 GB, this can be set as whole numbers using GB or MB
+memory=4GB
+# Makes the WSL 2 VM use two virtual processors
+processors=4 
+```
 
-### ssh를 통한 원격 연결 구성 
-
-
-
-### bit-server 내려받기
-
+## bit-server 내려받기
+### git clone bit-server
 ```
 git clone https://github.com/joygram/bit-server.git
 ```
-
-### 프로젝트 연결하기
-
-작업하고자 하는 `git`프로젝트의 저장소와 token 설정을 한다.
-
+### docker run 
 ```
-repository git주소 
-respsitory git주소
+cd bit-server/docker 
+./run_docker.[cmd,sh]
 ```
 
 
 
-### Docker 포트 개방 및 매핑:
+## 개발환경(workspace) 
 
-ssh: 원격 개발
-
-웹: 실행환경  
-
-#### basic 
-```
-apache2 : 80 -> 9090
-ssh: 22 -> 4444
-```
-#### advanced 
-```
-apache2 : 443 -> 8443
-shiny-server : 3838 -> 3939
+### workspace 흐름 
+```mermaid
+sequenceDiagram
+bit_server -->> bit_server : git clone
+bit_server -->> docker : docker run & live update
+workspace -->> docker : run 
+workspace -->> workspace : authoring with vscode
+docker -->> web_browser : execute
 ```
 
-### SSH 연결 
+### workspace 구성 
+작업하고자 하는 `git`프로젝트의 저장소를 `workspace`아래 연결합니다. 
 
+```
+cd workspace 
+git clone 주소 
+git clone 주소
+```
+
+###  개발환경 (VsCode를 활용)
+visual studio code는 개발환경이 `원격`,`로컬`유무에 따라 내부 확장(extension)을 설치하는 방식이 달라집니다. 특히 원격 개발을 진행할 때에는 자체적으로 visual studio code 서버를 구동 시키며 `ssh` 포트 포워딩을 자동으로 수행하여 줍니다. 
+
+- VsCode로 `ssh`를 통해 도커환경에 접속하여 개발을 진행 
 ```
 ssh shiny@localhost -p 4444
 ```
 
-#### 커스텀하기 
+로컬에 환경이 구성되어 있다면 기존 환경을 그대로 활용하는 방안도 있습니다. 다만, 로컬 환경은 각자 세팅이나 OS설정에 따라 달라질 수 있으므로 실행 결과가 불일치 할 수 있습니다. 
 
+
+### 웹서비스와 통합 
+
+웹서비스와 shiny-server서비스를 `같은 포트`로 서비스하고자 하는 경우 `proxy`와 `rewrite`모듈을 활용하여 연동하여 주도록 합니다. 
+
+이렇게 하였을 때 `여러종류의 웹서비스`를 하나의 통합된 사이트를 통해 연결할 수 있습니다.
+
+#### 웹서버 디렉토리 
+
+기본 웹디렉토리는 `workspace/html` 이하에 두도록 하였습니다. 필요한 html파일이 있다면 그곳에 배포하여 주시면 됩니다. 그외 접근하고자 하는 설정이 있다면 `apache2`설정을 추가하여 설정하여 주시면 됩니다. 
+
+
+
+
+## 환경 커스텀 
+bit-server의 목표중 하나는 도커이미지 빌드를 최소화한 유연한 개발환경의 확보입니다. 이것을 위해 서버 설정, 개발환경의 설정을 커스텀할 수 있는 여지를 만들었습니다. 
+
+### 도커환경 커스텀하기 (env)
+`env.[cmd,sh]`를 통해 도커 실행 스크립트를 변경하지 않고 컴퓨팅 환경에 맞추어 실행 환경을 구성할 수 있도록 하였습니다. 가장 빈번하게 변경되는 이슈가 `네트워크 포트`와 `컨테이너 이름`이 될 수 있기에 해당 부분에 대해 설정을 반영하였습니다.   
 ```
 workspace/conf/
-env.sh 
-env.cmd
+	env.sh 
+	env.cmd
 ```
+`env.sh`
 
 ```
 # env.sh
@@ -218,16 +232,70 @@ env.cmd
 #CONTAINER_NAME=bit-server
 #export CONTAINER_NAME
 ```
+### 서버 환경 커스텀
+서버 환경 설정을 변경하여 커스텀하고 싶은 경우 서버 설정을 오버라이드 할 수 있도록 기존 설정을 `workspace`에 복사후 변경을 하시면 됩니다.  
+
+#### workspace에 커스텀 설정을 추가합니다. 
+
+현재는 shiny-server와 apache2 서버의 커스텀 설정을 설정할 수 있도록 하였습니다. 
+
+workspcae가 배포환경이라면 배포환경의 scripts/apache2나 scripts/shiny-server의 파일을 workspace/conf/쪽에 복사한 후  설정을 변경하시면 됩니다. 
+
+```
+bit-server/workspace/conf/
+	shiny-server/
+	apache2/
+```
 
 
 
-## 웹서비스와 통합 
+## 같은 환경 다른 프로젝트 
 
-웹서비스와 shiny-server서비스를 `같은 포트`로 서비스하고자 하는 경우 `proxy`와 `rewrite`모듈을 활용하여 연동하여 주도록 합니다. 
+이제까지 느낌을 보시면서 느끼신 바와 같이 하나의 환경에 `도커 이미지` 재빌드하지 않고 다른 프로젝트의 확장도 고려하여 사용할 수 있도록 `커스텀`의 여지를 만들어 두었습니다. 
+여러개의 bit-server를 `클론`하고 각각 다른 `커스텀 설정`을 추가한다면 유연하게 확장할 수 있을 수 있습니다. 확장하기 위해 추가적인 컨셉을 도입할 여지는 있습니다.  
 
-이렇게 하였을 때 `여러종류의 웹서비스`를 하나의 통합된 사이트를 통해 연결할 수 있습니다.
+```mermaid
+stateDiagram 
+bit_server --> bit_server_a 
+bit_server --> bit_server_b
+bit_server_a --> custom_env_a
+bit_server_b --> custom_env_b
+custom_env_a --> workspace_project_a  
+custom_env_b --> workspace_project_b 
+```
 
-### shiny-server와의 통합 
+
+## bit-server 이해하기 
+
+### bit-server의 구성 
+bit-server 프로젝트는 `Docker`를 생성/실행/갱신을 하기 위한 부분과 `라이브 패치 및 실행`을 담당하는 부분 `workspace`를 연결하고 커스텀할 수 있는 부분으로 구성되어 있습니다. 
+```
+docker/ : 도커 이미지 및 실행 스크립드들을 포함 
+scripts/ : 도커 개발 환경의 서비스 실행 및 이미지 저장소 업데이트 
+workspace/ : 개발환경을 구축할 수 있는 entry point 
+```
+### 도커 환경 `라이브 패치`가 이루어진다. 
+
+`bit-server` git은 도커 이미지를 다시 빌드하지 않고 스크립트 및 설정을 `라이브 패치`가 가능하도록 구성하였습니다.
+
+저장소에 커밋을 하면 재시작시 라이브 패치를 진행합니다.  즉, 최신버젼의 서버 설정 등이 있다면 자연스럽게 반영이 되겠지요.  물론 도커이미지에 포함된 라이브러리등의 변경이 이루어졌을 경우 최신버젼을 내려받아야만 하는 경우도 발생할 것입니다. 
+
+간단한 스크립트 패치나 서버의 시작 도커 컨테이너에 추가적인(임시적인) 라이브러리 포함 등이 해당할 것입니다.  
+
+### bit-server 라이브 패치 및 업데이트 흐름 
+```mermaid
+stateDiagram
+bit_server_git --> bit_server : git clone
+bit_server --> workspace
+projects --> workspace : clone project
+bit_server_git --> bit_server : live_update
+bit_server --> docker : run_bit_server
+workspace --> docker : mount
+docker --> broswer : live result 
+editor --> workspace : authoring
+```
+
+### shiny-server와의 통합은 어떻게 했나 
 
 기본 설정은 다음과 같이 되어 있으며 `/shiny/` 로 접근하면 `shiny-server`로 pass해주도록 합니다. shinyApp의 경우 `websocket`을 사용하므로 관련 설정을 함께 포함하여 주어야 합니다.  그외 여러가지 웹서비스와 통합이 가능하도록 설정을 추가하시면 됩니다. 
 
@@ -249,14 +317,14 @@ env.cmd
 </VirtualHost>
 ```
 
-### 웹서버 디렉토리 
-
-기본 웹디렉토리는 `workspace/html` 이하에 두도록 하였습니다. 필요한 html파일이 있다면 그곳에 배포하여 주시면 됩니다. 그외 접근하고자 하는 설정이 있다면 `apache2`설정을 추가하여 설정하여 주시면 됩니다. 
 
 
+## 프로젝트 테스트 
+### quarto
 
-## 테스트 프로젝트  
+- bit-server quarto site  
 
+- presentation 
 ### shinyApp
 
 - guess_number 
@@ -265,113 +333,15 @@ env.cmd
 
 - https://github.com/Public-Health-Scotland/rmarkdown-training-online.git
 
-### quarto
-
-- bit-server quarto site  
-
-- presentation 
 
 ### shinyLive 
 
 - shinyelive clone & build
 
 
-
-## 도커 환경 `라이브 패치`가 가능하다
-
-`bit-server` git은 도커 이미지를 다시 빌드하지 않고 스크립트 및 설정을 `라이브 패치`가 가능하도록 구성하였습니다.
-
-저장소에 커밋을 하면 재시작시 라이브 패치를 진행합니다.  즉, 최신버젼의 서버 설정 등이 있다면 자연스럽게 반영이 되겠지요. 
-
-### bit-server 라이브 패치 및 업데이트 흐름 
-```mermaid
-stateDiagram
-bit_server_git --> bit_server : git clone
-bit_server --> workspace
-projects --> workspace : clone project
-bit_server_git --> bit_server : live_update
-bit_server --> docker : run_bit_server
-workspace --> docker : mount
-docker --> broswer : live result 
-editor --> workspace : authoring
-```
-
-![image-20221012112751107](README.assets/image-20221012112751107.png)
-
-### 개인 환경에 맞게 좀 더 커스텀하고 싶다면
-
-#### workspace에 커스텀 설정을 추가합니다. 
-
-현재는 shiny-server와 apache2 서버의 커스텀 설정을 설정할 수 있도록 하였습니다. 
-
-workspcae가 배포환경이라면 배포환경의 workspace에 복사하여 주도록 합니다. 
-
-```
-bit-server/workspace/conf/
-	shiny-server/
-	apache2/
-```
-
-
-
-#### 저장소를 `fork`하여 기본 저장소 구성 스크립트를 수정하여 줍니다.
-
-라이브 패치가 가능하도록 구성하고 싶다면 `저장소`를 fork하여 구성 스크립트를 수정하여 줍니다.  
-
-```bash
-# bit-server/scripts/update_repository.sh
-#!/usr/bin/bash
-if [ ! -d /home/bit-server ]; then
-	echo == git clone == 
-	sudo -u shiny git clone https://github.com/joygram/bit-server.git /home/bit-server
-else 
-	echo == git repository update ==
-	pushd .
-	cd /home/bit-server
-	sudo -u shiny git reset --hard
-	sudo -u shiny git pull 
-	popd 
-fi
-```
-
-
-
-## workspace의 관리 
-
-### 배포방식을 결정할 수 있다. 
-
-포함시킬수도 있고 외부에서 관리할 수 있습니다. 하나의 컨테이너로 포장하고 싶을 경우에는 기존 Docker파일을 수정 & 확장하여 사용하면 됩니다. 
-
-능동적인 패치를 원하는 경우 이미지 단위 패치가 아니라 `workspace`단위 패치를 수행할 수 있습니다.  
-
-
-
-## 같은 환경 다른 프로젝트 
-
-
-
-
-## 컨테이너 관리  
-
-생성한 컨테이너를 지우지만 않으면 기본 환경 구성은 유지가 됩니다. 지속적인 사용이 가능한 것이지요. 
-
-흔한 일은 아니지만 컨테이너를 삭제하는 일은 컴퓨터에 설치한 OS를 제거하는 것과 같은 행위로 추가적인 작업환경을 잃을 수도 있므로 
-
-도커 컨테이너에 추가적인 환경을 유지하고 싶은 경우에는 저장하고 그것을 따로 배포하는 방식의 용도로 사용할 수 있습니다. 
-
-```
-docker commit 
-```
-
-
-
 ## Reference 
 
 ```
-Running Shiny Server in Docker
-https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
-https://github.com/analythium/covidapp-shiny
-
 Running Shiny Server in Docker
 https://www.r-bloggers.com/2021/06/running-shiny-server-in-docker/
 
