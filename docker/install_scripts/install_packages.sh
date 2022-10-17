@@ -4,6 +4,9 @@ source ./install_quarto.sh
 # install shinylive and python lib 
 source ./install_shinylive.sh
 
+wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2022.07.2-576-amd64.deb
+gdebi rstudio-server-2022.07.2-576-amd64.deb
+
 # install r packages 
 
 install2.r bs4cards clusterSim DALEX DALEXtra EnvStats flexdashboard ggrepel gt
