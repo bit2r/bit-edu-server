@@ -14,3 +14,11 @@ export SSL_PORT
 
 CONTAINER_NAME=bit-server
 export CONTAINER_NAME
+
+custom_env=../workspace/conf/env.sh
+if [[ -f $custom_env ]];then
+	source $custom_env 
+else 
+	# cp custom env template 
+	cp ../scripts/workspace_template/conf/env.sh $custom_env
+fi 
