@@ -2,6 +2,8 @@
 
 # OS와 무관한 데이터 과학 `개발 환경` 구성
 
+author: joygram@gmail.com 
+
 
 
 ## 컨테이너 기반 환경 구성 
