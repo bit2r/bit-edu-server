@@ -321,25 +321,6 @@ editor --> workspace : authoring
 
 
 
-## 프로젝트 테스트 
-### quarto
-
-- bit-server quarto site  
-
-- presentation 
-### shinyApp
-
-- guess_number 
-
-### learnR 
-
-- https://github.com/Public-Health-Scotland/rmarkdown-training-online.git
-
-
-### shinyLive 
-
-- shinyelive clone & build
-
 
 ## Reference 
 
