@@ -1,2 +1,4 @@
 @call .\env.cmd 
-docker run -d --rm -p %WEB_PORT%:80 -p %SSH_PORT%:22 -p %SHINY_PORT%:3838  -p %SSL_PORT%:443 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" bit-server-local
+set IMAGE_NAME=bit-server-local
+echo start %IMAGE_NAME% to %CONTAINER_NAME% : %WEB_PORT%
+docker run -d --rm -p %WEB_PORT%:80 -p %SSH_PORT%:22 -p %SHINY_PORT%:3838  -p %SSL_PORT%:443 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%
