@@ -9,5 +9,8 @@ set custom_env=..\workspace\conf\env.cmd
 if exist %custom_env% (
 	call %custom_env%
 ) else (
+	if not exist ..\workspace\conf (
+		mkdir ..\workspace\conf
+	)
 	copy ..\scripts\workspace_template\env.cmd %custom_env%
 )

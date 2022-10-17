@@ -20,5 +20,6 @@ if [[ -f $custom_env ]];then
 	source $custom_env 
 else 
 	# cp custom env template 
+	mkdir -p ../workspace/conf
 	cp ../scripts/workspace_template/conf/env.sh $custom_env
 fi 
