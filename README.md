@@ -96,6 +96,8 @@ ref: running-shiny-server-in-docker
 
 이미 훌륭한 환경이 구성되어있어 어떤 컨테이너를 어떻게 조합하느냐의 문제만 남아있습니다.  여기서 소개하고 싶은 내용은 컨테이너 조합에 대한 부분을 넘어서 `개발 환경`이 곧 `배포 환경`될 수 있도록 구성하고하 하는데 그 의의가 있습니다. 
 
+
+
  ### 포함하고 있는 환경 
 
 - nodejs / php / apache2 / ssh / mysql(mariadb) 
@@ -106,7 +108,7 @@ ref: running-shiny-server-in-docker
 
 
 ## 워크플로우
-### 작업 흐름 
+### workspace 흐름 
 ```mermaid
 sequenceDiagram
 bit_server -->> bit_server : git clone
@@ -116,18 +118,6 @@ workspace -->> workspace : authoring
 docker -->> web_browser : execute
 ```
 
-### 관계 상태 흐름 
-```mermaid
-stateDiagram
-bit_server_git --> bit_server : git clone
-bit_server --> workspace
-projects --> workspace : clone project
-bit_server_git --> bit_server : live_update
-bit_server --> docker : run_bit_server
-workspace --> docker : mount
-docker --> broswer : live result 
-editor --> workspace : authoring
-```
 
 
 ## Docker Desktop 설치하기 
@@ -187,7 +177,7 @@ ssh: 원격 개발
 
 #### basic 
 ```
-apache2 : 80 -> 8080
+apache2 : 80 -> 9090
 ssh: 22 -> 4444
 ```
 #### advanced 
@@ -202,6 +192,33 @@ shiny-server : 3838 -> 3939
 ssh shiny@localhost -p 4444
 ```
 
+#### 커스텀하기 
+
+```
+workspace/conf/
+env.sh 
+env.cmd
+```
+
+```
+# env.sh
+# override for your environment 
+#WEB_PORT=9090
+#export WEB_PORT
+
+#SSH_PORT=4444
+#export SSH_PORT
+
+#SHINY_PORT=3939
+#export SHINY_PORT
+
+#SSL_PORT=8443
+#export SSL_PORT
+
+#CONTAINER_NAME=bit-server
+#export CONTAINER_NAME
+```
+
 
 
 ## 웹서비스와 통합 
@@ -212,7 +229,7 @@ ssh shiny@localhost -p 4444
 
 ### shiny-server와의 통합 
 
-기본 설정은 다음과 같이 되어 있으며 `/shiny/` 로 접근하면 `shiny-server`로 pass해주도록 합니다. shinyApp의 경우 `websocket`을 사용하므로 관련 설정을 함께 포함하여 주어야 합니다. 
+기본 설정은 다음과 같이 되어 있으며 `/shiny/` 로 접근하면 `shiny-server`로 pass해주도록 합니다. shinyApp의 경우 `websocket`을 사용하므로 관련 설정을 함께 포함하여 주어야 합니다.  그외 여러가지 웹서비스와 통합이 가능하도록 설정을 추가하시면 됩니다. 
 
 ```apache
 <VirtualHost *:80>
@@ -266,6 +283,19 @@ ssh shiny@localhost -p 4444
 
 저장소에 커밋을 하면 재시작시 라이브 패치를 진행합니다.  즉, 최신버젼의 서버 설정 등이 있다면 자연스럽게 반영이 되겠지요. 
 
+### bit-server 라이브 패치 및 업데이트 흐름 
+```mermaid
+stateDiagram
+bit_server_git --> bit_server : git clone
+bit_server --> workspace
+projects --> workspace : clone project
+bit_server_git --> bit_server : live_update
+bit_server --> docker : run_bit_server
+workspace --> docker : mount
+docker --> broswer : live result 
+editor --> workspace : authoring
+```
+
 ![image-20221012112751107](README.assets/image-20221012112751107.png)
 
 ### 개인 환경에 맞게 좀 더 커스텀하고 싶다면
@@ -315,6 +345,8 @@ fi
 능동적인 패치를 원하는 경우 이미지 단위 패치가 아니라 `workspace`단위 패치를 수행할 수 있습니다.  
 
 
+
+## 같은 환경 다른 프로젝트 
 
 
 
