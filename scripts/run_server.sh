@@ -14,6 +14,6 @@ service apache2 start
 service mariadb start 
 
 #rstudio-server
-service rstudio-server 
+service rstudio-server start
 
 exec sudo -u shiny shiny-server
