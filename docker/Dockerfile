@@ -32,8 +32,8 @@ RUN apt-get install -y apache2
 RUN apt install php8.1 -y
 
 # install mariadb 
-RUN apt install mariadb-server mariadb-client -y
-
+RUN apt install -y mariadb-server mariadb-client 
+RUN apt install -y libssl-dev libclang-dev
 # make ssh admin account 
 RUN useradd -m shiny
 RUN echo "shiny:shiny" | chpasswd 

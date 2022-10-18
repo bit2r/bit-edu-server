@@ -9,9 +9,11 @@ service ssh start
 #run apache2
 service apache2 start 
 
-#run mysqld 
+#mysql 
 #service mysql start 
+service mariadb start 
 
-#exec sudo -u shiny shiny-server
+#rstudio-server
+serivce rstudio-server 
 
-sudo -u shiny bash
+exec sudo -u shiny shiny-server
