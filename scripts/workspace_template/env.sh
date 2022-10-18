@@ -11,5 +11,9 @@
 #SSL_PORT=8443
 #export SSL_PORT
 
+#RSTUDIO_PORT=8787
+#export RSTUDIO_PORT
+
+
 #CONTAINER_NAME=bit-server
 #export CONTAINER_NAME
