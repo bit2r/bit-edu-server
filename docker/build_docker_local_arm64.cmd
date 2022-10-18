@@ -1,0 +1,1 @@
+docker build -t bit-server-local-arm64 . -f Dockerfile.arm64
