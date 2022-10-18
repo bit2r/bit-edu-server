@@ -51,7 +51,7 @@ RUN ./install_packages.sh
 #change shiny user directory and sudouer 
 RUN usermod -d /home/bit-server shiny
 RUN usermod -aG sudo shiny
-
+RUN apt-get install -y sudo 
 # setup workspace 
 RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 

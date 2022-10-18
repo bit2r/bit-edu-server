@@ -10,6 +10,8 @@ service ssh start
 service apache2 start 
 
 #run mysqld 
-service mysql start 
+#service mysql start 
 
-exec sudo -u shiny shiny-server
+#exec sudo -u shiny shiny-server
+
+sudo -u shiny bash
