@@ -334,4 +334,7 @@ https://docs.docker.com
 
 Quarto
 https://quarto.org
+
+Rstudio apache proxy 
+https://intrepidgeeks.com/tutorial/proxy-settings-for-rstudio-server-apache
 ```
