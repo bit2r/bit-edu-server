@@ -19,4 +19,5 @@ service rstudio-server start
 #code-server
 service code-server start 
 
-exec sudo -u bit shiny-server
+#exec sudo -u bit shiny-server
+exec sudo -u bit bash
