@@ -17,7 +17,7 @@ install2.r ids igraph influenceR isoband jquerylib jsonlite kableExtra knitr lab
 install2.r lazyeval lifecycle lubridate magrittr markdown memoise mime modelr munsell officer openssl openxlsx 
 install2.r pillar pkgconfig prettyunits processx progress promises proxy ps purrr rappdirs readr readxl      
 install2.r rematch rematch2 reprex reticulate rlang rmarkdown rprojroot rstudioapi rvest s2 sass scales selectr     
-install2.r sf shiny shinyAce shinycssload shinydashboa shinybusy shinydashboa shinyWidgets shinyjs showtext showtextdb sourcetools 
+install2.r sf shiny shinyAce shinycssload shinydashboa shinybusy shinydashboa shinyWidgets shinyjs shinytheme showtext showtextdb sourcetools 
 install2.r stringi stringr svglite sys sysfonts systemfonts 
 install2.r tibble tidyr tidyselect tidyverse tinytex 
 install2.r tzdb units utf8 uuid vctrs viridis viridisLite visNetwork vroom waiter webshot withr wk          

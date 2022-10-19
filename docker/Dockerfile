@@ -5,9 +5,6 @@ LABEL maintainer="joygram <joygram@gmail.com>"
 # setup workspace 
 #RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 
-RUN apt-get install -y curl
-RUN wget -O - https://code-server.dev/install.sh | sh
-
 # add locale 
 RUN apt-get install locales -y 
 RUN locale-gen en_US.UTF-8

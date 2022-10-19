@@ -34,9 +34,9 @@ RUN apt install php8.1 -y
 # install mariadb 
 RUN apt install -y mariadb-server mariadb-client 
 RUN apt install -y libssl-dev libclang-dev
-# make ssh admin account 
-RUN useradd -m shiny
-RUN echo "shiny:shiny" | chpasswd 
+# install etc j
+RUN apt-get install -y sudo 
+RUN apt-get install -y curl
 
 #server settings 
 WORKDIR /home/install
@@ -48,16 +48,20 @@ RUN R -f ./install_packages.R
 # install shinylive, quarto, etc.
 RUN ./install_packages.sh
 
-#change shiny user directory and sudouer 
-RUN usermod -d /home/bit-server shiny
-RUN usermod -aG sudo shiny
-RUN apt-get install -y sudo 
+#change bit-server user directory and sudouer 
+#make bit-server account 
+RUN useradd -m bit
+RUN echo "bit:bit" | chpasswd 
+RUN usermod -d /home/bit-server bit
+RUN usermod -aG sudo bit
+
+
 # setup workspace 
 RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
 
 WORKDIR /home/bit-server
 RUN cp /home/install/.bash* /home/bit-server
-RUN chown shiny:shiny -R /home/bit-server
+RUN chown bit:bit -R /home/bit-server
 
 
 #  apache2 apache2-ssl ssh rstudio-server shiny-server 
