@@ -7,6 +7,7 @@ TARGET_APACHE_CONF=/etc/apache2
 # copy service conf override 
 echo == apply service script 
 cp -R ./init.d/* /etc/init.d/
+chmod 755 /etc/init.d/*
 
 cp ./shiny-server/shiny-server.conf $TARGET_SHINY_CONF
 cp -R ./apache2/* $TARGET_APACHE_CONF
