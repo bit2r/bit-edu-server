@@ -73,7 +73,7 @@ EXPOSE 80 22 8787 3838 443
 # additional apache setting
 RUN a2enmod proxy proxy_http proxy_wstunnel rewrite
 
-RUN chsh shiny -s /usr/bin/bash 
+RUN chsh bit -s /usr/bin/bash 
 RUN chsh root -s /usr/bin/bash 
 
 ## 패치 및 설정 반영 
