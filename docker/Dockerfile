@@ -14,7 +14,7 @@ ENV LC_ALL en_US.UTF-8
 
 WORKDIR /home/bit-server
 
-RUN chown -R shiny:shiny /var/lib/shiny-server
+RUN chown -R bit:bit /var/lib/shiny-server
 
 #  apache2 apache2-ssl ssh rstudio-server shiny-server 
 #EXPOSE 80 22 8787 3838 443  
