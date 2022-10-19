@@ -42,9 +42,6 @@ RUN apt-get install -y curl
 WORKDIR /home/install
 COPY install_scripts /home/install
 
-# install required packages 
-RUN R -f ./install_packages.R 
-
 # install shinylive, quarto, etc.
 RUN ./install_packages.sh
 

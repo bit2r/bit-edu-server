@@ -4,7 +4,7 @@
 install2.r bs4cards clusterSim DALEX DALEXtra EnvStats flexdashboard ggrepel gt
 install2.r janitor keras mixdist modelStudio plotly r2d3 ranger reshape2 rsconnect shinythemes tidymodels
 install2.r KernSmooth MASS Matrix class lattice mgcv nlme gridlayout learnr      
-install2.r DBI DT DiagrammeR R6 RColorBrewer Rcpp Rttf2pt1 askpass assertthat  
+install2.r devtools DBI DT DiagrammeR R6 RColorBrewer Rcpp Rttf2pt1 askpass assertthat  
 install2.r backports base64enc bit bit64 blob broom      
 install2.r bslib cachem callr cellranger checkmate classInt    
 install2.r cli clipr colourpicker colorspace commonmark cpp11 crayon crosstalk curl        
