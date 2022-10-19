@@ -16,4 +16,7 @@ service mariadb start
 #rstudio-server
 service rstudio-server start
 
+#code-server
+service code-server start 
+
 exec sudo -u shiny shiny-server
