@@ -42,13 +42,11 @@ RUN apt-get install -y curl
 WORKDIR /home/install
 COPY install_scripts /home/install
 
+RUN R -f ./install_packages.R
+
 # install shinylive, quarto, etc.
 RUN ./install_packages.sh
 
-# make code-server as service 
-RUN cp code-server /etc/init.d/
-
-#change bit-server user directory and sudouer 
 #make bit-server account 
 RUN useradd -m bit
 RUN echo "bit:bit" | chpasswd 
