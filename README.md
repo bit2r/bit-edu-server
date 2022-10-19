@@ -92,11 +92,14 @@ ref: running-shiny-server-in-docker
 
 이미 훌륭한 환경이 구성되어있어 어떤 컨테이너를 어떻게 조합하느냐의 문제만 남아있습니다.  여기서 소개하고 싶은 내용은 컨테이너 조합에 대한 부분을 넘어서 `개발 환경`이 곧 `배포 환경`될 수 있도록 구성하고하 하는데 그 의의가 있습니다.
 
+- bit-server-base : 빌드 / 서버 운영을 위한 라이브러리 전반 / 서버 포함 이미지
+- bit-server : 빌드를 최소화하고 확장하고자 하는 이미지 
+
 ### 포함하고 있는 환경
 
 - nodejs / php / apache2 / ssh / mysql(mariadb)
 - shiny-server / R and R package / rstudio-server
-- qurto / tex / vim
+- qurto / tex / vim / code
 - python3 / shinylive
 
 ## Docker Desktop 설치하기
