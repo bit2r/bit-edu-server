@@ -24,4 +24,4 @@ service shiny-server start
 
 service --status-all 
 #exec sudo -u bit shiny-server
-#exec sudo -u bit bash
+exec sudo -u bit bash
