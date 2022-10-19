@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+cp /usr/local/lib/R/site-library/littler/examples/install2.r /usr/bin/
 
 # install r packages 
 install2.r bs4cards clusterSim DALEX DALEXtra EnvStats flexdashboard ggrepel gt

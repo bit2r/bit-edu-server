@@ -78,5 +78,10 @@ RUN a2enmod proxy proxy_http proxy_wstunnel rewrite
 RUN chsh bit -s /usr/bin/bash 
 RUN chsh root -s /usr/bin/bash 
 
+# clean up apt cache 
+RUN apt-get clean autoclean
+RUN apt-get autoremove --yes
+RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
+
 ## 패치 및 설정 반영 
 CMD ["bash", "/home/bit-server/scripts/update.sh"]
