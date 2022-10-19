@@ -75,7 +75,7 @@ RUN chown bit:bit -R /home/bit-server
 
 
 #  apache2 apache2-ssl ssh rstudio-server shiny-server 
-EXPOSE 80 22 8787 3838 443  
+EXPOSE 80 22 443 8787 3838
 
 # additional apache setting
 RUN a2enmod proxy proxy_http proxy_wstunnel rewrite
