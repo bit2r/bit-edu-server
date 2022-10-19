@@ -25,3 +25,5 @@ if [[ -d "$CUSTOM_APACHE_CONF" ]]; then
 	echo copy $CUSTOM_APACHE_CONF
 	cp -R $CUSTOM_APACHE_CONF $TARGET_APACHE_CONF
 fi
+
+chmod -R 777 /var/log/shiny-server
