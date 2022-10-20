@@ -12,6 +12,9 @@ chmod 755 /etc/init.d/*
 cp ./shiny-server/shiny-server.conf $TARGET_SHINY_CONF
 cp -R ./apache2/* $TARGET_APACHE_CONF
 
+cp ./bash/.* /home/bit-server
+cp ./bash/.* ~/
+
 echo == apply custom conf == 
 # apply custom shiny-server config
 CUSTOM_SHINY_CONF=/home/bit-server/workspace/conf/shiny-server/shiny-server.conf
