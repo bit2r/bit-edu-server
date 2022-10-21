@@ -18,3 +18,5 @@ if [[ ! -d "$WORKSPACE_PATH/html" ]]; then
 	echo == copy workspace template == 
 	cp -R $TEMPLATE_PATH $WORKSPACE_PATH
 fi 
+
+chmod 777 -R /tmp/*
