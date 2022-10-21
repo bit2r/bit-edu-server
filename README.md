@@ -56,10 +56,17 @@ ref: running-shiny-server-in-docker
 환경을 구성하는데에 걸리는 시간도 무시할 수 없기 때문입니다. 
 
 
+
+
 ### 이미지의 구성
 
 - bit-server-base : 기본 서버 및 라이브러리와 OS기반 패키지를 포함합니다.
+
+  - ubuntu official docker를 확장  
+
 - bit-server : bit-server-base를 확장하여 추가적인 패키지를 확장합니다.
+
+  
 
 
 ## 무엇을 하기 위해서 인가?
@@ -186,7 +193,7 @@ visual studio code는 개발환경이 `원격`,`로컬`유무에 따라 내부 �
 - VsCode로 `ssh`를 통해 도커환경에 접속하여 개발을 진행
 
 ```
-ssh shiny@localhost -p 4444
+ssh bit@localhost -p 4444
 ```
 
 로컬에 환경이 구성되어 있다면 기존 환경을 그대로 활용하는 방안도 있습니다. 다만, 로컬 환경은 각자 세팅이나 OS설정에 따라 달라질 수 있으므로 실행 결과가 불일치 할 수 있습니다.
