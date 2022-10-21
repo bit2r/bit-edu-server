@@ -22,4 +22,6 @@ install2.r sf shiny shinyAce shinycssload shinydashboa shinybusy shinydashboa sh
 install2.r stringi stringr svglite sys sysfonts systemfonts 
 install2.r tibble tidyr tidyselect tidyverse tinytex 
 install2.r tzdb units utf8 uuid vctrs viridis viridisLite visNetwork vroom waiter webshot withr wk          
-install2.r xfun xml2 xtable yaml zip       
+install2.r xfun xml2 xtable yaml zip      
+# for bitStat 
+install2.r gdtools flextable dlookr alookr
