@@ -9,7 +9,10 @@ WORKDIR /home/bit-server
 
 RUN chown -R bit:bit /var/lib/shiny-server
 
-RUN sudo -u bit git reset HEAD^ --hard
+# override latest repository
+RUN rm -rf /home/bit-server
+RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
+RUN chown -R bit:bit /home/bit-server
 
 #  apache2 apache2-ssl ssh rstudio-server shiny-server 
 #EXPOSE 80 22 8787 3838 443  
