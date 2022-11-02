@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./install_r_packages.sh 
+#source ./install_r_packages.sh 
 
 # install quarto 
 wget https://quarto.org/download/latest/quarto-linux-amd64.deb
@@ -22,6 +22,3 @@ source ./install_shinylive.sh
 
 # cleanup 
 rm *.deb 
-
-# for presentation
-npm install reveal.js

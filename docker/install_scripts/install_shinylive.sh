@@ -2,4 +2,7 @@
 
 wget https://bootstrap.pypa.io/get-pip.py
 python3 ./get-pip.py
-pip install shinylive numpy pandas 
+
+pip install shinylive 
+pip install numpy 
+pip install pandas 
