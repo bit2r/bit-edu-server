@@ -1,4 +1,3 @@
 #!/bin/bash
-echo hello world 
-
+bash /home/bit-server/scripts/update.sh
 exit 0
