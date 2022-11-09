@@ -17,7 +17,8 @@ EXPOSE 80 22 5000
 
 RUN apt-get install -y libsass-dev
 RUN apt-get install -y libxt-dev
-RUN install2.r 
+RUN apt-get install -y npm
+
 ## 패치 및 설정 반영 
 #CMD ["bash", "/home/bit-server/scripts/update.sh"]
 CMD ["/sbin/init"]
