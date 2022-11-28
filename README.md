@@ -1,4 +1,4 @@
-# OS와 무관한 데이터 과학 `개발 환경` 구성
+# 데이터 과학 교육 `개발 환경`
 
 author: joygram@gmail.com
 
