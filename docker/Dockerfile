@@ -8,7 +8,7 @@ RUN chown -R bit:bit /var/lib/shiny-server
 
 # override latest repository
 RUN rm -rf /home/bit-server
-RUN git clone https://github.com/joygram/bit-server.git /home/bit-server
+RUN git clone https://github.com/bit2r/bit-edu-server.git /home/bit-server
 RUN chown -R bit:bit /home/bit-server
 
 #  apache2 apache2-ssl ssh rstudio-server shiny-server 
@@ -18,7 +18,7 @@ EXPOSE 80 22 5000
 RUN apt-get install -y libsass-dev
 RUN apt-get install -y libxt-dev
 RUN apt-get install -y npm
-
+RUN 
 ## 패치 및 설정 반영 
 #CMD ["bash", "/home/bit-server/scripts/update.sh"]
 CMD ["/sbin/init"]

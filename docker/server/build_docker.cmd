@@ -1,2 +1,4 @@
 @cd ..
-docker build -t joygram/bit-server . -f Dockerfile 
+docker pull joygram/bit-server-base:latest
+docker build -t r2bit/bit-edu-server . -f Dockerfile 
+pause

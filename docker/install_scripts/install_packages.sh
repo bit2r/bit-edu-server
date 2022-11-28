@@ -23,6 +23,7 @@ source ./install_shinylive.sh
 # make rc-local service and update 
 cp ./rc-local.service /etc/systemd/system/
 cp ./rc-local /etc/rc.local
+cp ./locale /etc/default/locale
 chmod 755 /etc/rc.local
 ln -s /lib/systemd/system/rc-local.service /etc/systemd/multi-user.target.wants/rc-local.service
  

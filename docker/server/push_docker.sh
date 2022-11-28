@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-docker login -u joygram 
-docker push joygram/bit-server
+docker login -u r2bit 
+docker push r2bit/bit-edu-server

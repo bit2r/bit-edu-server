@@ -1,2 +1,2 @@
 @cd ..
-docker build -t bit-server-local . -f Dockerfile 
+docker build -t bit-edu-server-local . -f Dockerfile 
