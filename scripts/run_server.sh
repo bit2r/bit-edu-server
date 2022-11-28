@@ -19,7 +19,9 @@ service rstudio-server restart
 #code-server
 service code-server restart 
 
+#shiny-server 
+service shiny-server stop
+service shiny-server start
+
 service --status-all 
 
-#shiny-server 
-service shiny-server restart 
