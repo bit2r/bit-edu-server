@@ -18,7 +18,8 @@ EXPOSE 80 22 5000
 RUN apt-get install -y libsass-dev
 RUN apt-get install -y libxt-dev
 RUN apt-get install -y npm
-RUN 
-## 패치 및 설정 반영 
-#CMD ["bash", "/home/bit-server/scripts/update.sh"]
+
+RUN cp /home/install/rc-local.service /etc/systemd/system/
+RUN cp /home/install/rc.local /etc/
+
 CMD ["/sbin/init"]

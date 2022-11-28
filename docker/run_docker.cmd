@@ -1,5 +1,12 @@
 @call .\env.cmd 
-set IMAGE_NAME=joygram/bit-server:latest
+set DAEMON=
+if "%1" == "" set DAEMON=-d
+
+set IMAGE_NAME=r2bit/bit-edu-server:latest
+set TMP_FS=--tmpfs /run/lock --tmpfs /run -v %CD%\cgroup:/sys/fs/cgroup:ro
+set TMP_FS=--privileged
+
+
 echo start %IMAGE_NAME% to %CONTAINER_NAME% : %WEB_PORT%
-rem docker run -d --rm -p %WEB_PORT%:80 -p %SSH_PORT%:22 -p %SHINY_PORT%:3838  -p %SSL_PORT%:443 -p %RSTUDIO_PORT%:8787 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%
-docker run -d -it -p 5000:5000 -p %WEB_PORT%:80 -p %SSH_PORT%:22 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%
+docker rm %CONTAINER_NAME%
+docker run %DAEMON% -it --hostname %CONTAINER_NAME%  %TMP_FS% -p %WEB_PORT%:80 -p %SSH_PORT%:22 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%

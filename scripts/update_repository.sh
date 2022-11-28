@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 if [ ! -d /home/bit-server ]; then
 	echo == git clone == 
-	sudo -u bit git clone https://github.com/joygram/bit-server.git /home/bit-server
+	sudo -u bit git clone https://github.com/bit2r/edu-bit-server.git /home/bit-server
 else 
 	echo == git repository update ==
 	pushd .
