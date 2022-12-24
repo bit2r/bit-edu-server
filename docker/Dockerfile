@@ -22,4 +22,13 @@ RUN apt-get install -y npm
 RUN cp /home/install/rc-local.service /etc/systemd/system/
 RUN cp /home/install/rc.local /etc/
 
+# composer with php 7.1 bit-learn
+RUN apt-get install -y php7.1
+RUN apt-get install -y php7.1-sqlite sqlite3
+RUN apt-get install -y php7.1-curl 
+RUN apt-get install -y php7.1-xml
+RUN apt update
+RUN apt install -y php-cli unzip
+RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 CMD ["/sbin/init"]
