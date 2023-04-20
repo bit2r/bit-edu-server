@@ -9,4 +9,5 @@ set TMP_FS=--privileged
 
 echo start %IMAGE_NAME% to %CONTAINER_NAME% : %WEB_PORT%
 docker rm %CONTAINER_NAME%
-docker run %DAEMON% -it --hostname %CONTAINER_NAME%  %TMP_FS% -p %WEB_PORT%:80 -p %SSH_PORT%:22 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%
+docker run %DAEMON% -it   --env NVIDIA_DISABLE_REQUIRE=1 --gpus all --hostname %CONTAINER_NAME%  %TMP_FS% -p %WEB_PORT%:80 -p %SSH_PORT%:22 -p %APP_PORT%:7777 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%
+rem docker run %DAEMON% -it   --hostname %CONTAINER_NAME%  %TMP_FS% -p %WEB_PORT%:80 -p %SSH_PORT%:22 --name %CONTAINER_NAME% -v "%cd%\..\workspace:/home/bit-server/workspace" %IMAGE_NAME%

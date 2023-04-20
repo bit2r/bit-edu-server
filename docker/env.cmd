@@ -4,6 +4,7 @@ set SSH_PORT=4444
 set SHINY_PORT=3939
 set SSL_PORT=8443
 set RSTUDIO_PORT=8787
+set APP_PORT=7777
 set CONTAINER_NAME=bit-edu-server
 
 set custom_env=..\workspace\conf\env.cmd
